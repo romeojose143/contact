@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Save Romeo's Contact</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #1a1a1a 0%, #c0392b 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: #fff;
+  }
+  .card {
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 24px;
+    padding: 40px 30px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+  .avatar {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    font-weight: 700;
+    box-shadow: 0 10px 30px rgba(231,76,60,0.4);
+  }
+  h1 { font-size: 24px; margin-bottom: 6px; }
+  .org { color: #e74c3c; font-weight: 600; margin-bottom: 4px; }
+  .role { color: #aaa; font-size: 14px; margin-bottom: 24px; }
+  .info {
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #ddd;
+  }
+  .info strong { color: #fff; display: inline-block; width: 70px; }
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border: none;
+    cursor: pointer;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-wa { background: linear-gradient(135deg, #25d366, #128c7e); }
+  .hint { color: #888; font-size: 12px; margin-top: 16px; line-height: 1.5; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="avatar">R</div>
+    <h1>ROMEO Used Bikes</h1>
+    <div class="org">Grand Auto Consultant</div>
+    <div class="role">Pre-Owned Two-Wheeler Dealership</div>
+
+    <div class="info">
+      <div><strong>📞 Phone:</strong> +91 97477 30400</div>
+      <div><strong>📍 Area:</strong> Thrissur, Kerala</div>
+      <div><strong>🏍️ Service:</strong> Buy, Sell & Valuation</div>
+    </div>
+
+    <button class="btn" onclick="saveContact()">📇 Save to Contacts</button>
+    <a href="https://wa.me/919747730400" class="btn btn-wa">💬 Chat on WhatsApp</a>
+
+    <div class="hint">Tap "Save to Contacts" — your phone will add Romeo to your contact list.</div>
+  </div>
+
+<script>
+  const vcfData = `BEGIN:VCARD
+VERSION:3.0
+N:Used Bikes;ROMEO;;;
+FN:ROMEO Used Bikes
+ORG:Grand Auto Consultant
+TITLE:Pre-Owned Two-Wheeler Dealership
+TEL;TYPE=CELL,VOICE,PREF:+919747730400
+TEL;TYPE=WORK,VOICE:+919747730400
+ADR;TYPE=WORK:;;Thrissur;Kerala;;;India
+NOTE:Buying, Selling & Valuation of Pre-Owned Two-Wheelers
+END:VCARD`;
+
+  function saveContact() {
+    const blob = new Blob([vcfData], { type: 'text/vcard;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Romeo-GrandAuto.vcf';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 100);
+  }
+</script>
+</body>
+</html>
