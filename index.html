@@ -97,7 +97,7 @@
     <button class="btn" onclick="saveContact()">📇 Save to Contacts</button>
     <a href="https://wa.me/919747730400" class="btn btn-wa">💬 Chat on WhatsApp</a>
 
-    <div class="hint">Download started automatically. Tap the downloaded file to add Romeo to your contacts.</div>
+    <div class="hint">Tap anywhere on the page if download does not start. Then tap the downloaded file to save the contact.</div>
   </div>
 
 <script>
@@ -117,7 +117,11 @@ PHOTO;ENCODING=BASE64;TYPE=JPEG:${photoB64.replace(/\s+/g, '')}
 
 END:VCARD`;
 
+  let downloaded = false;
+
   function saveContact() {
+    if (downloaded) return;
+    downloaded = true;
     const blob = new Blob([vcfData], { type: 'text/vcard;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -127,11 +131,21 @@ END:VCARD`;
     a.click();
     document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(url), 100);
+    setTimeout(() => { downloaded = false; }, 2000);
   }
 
-  // Auto-trigger download as soon as page loads
+  // Try auto-download on page load
   window.addEventListener('load', function() {
-    setTimeout(saveContact, 500);
+    setTimeout(saveContact, 300);
+  });
+
+  // Backup: trigger download on ANY user interaction
+  // This handles browsers that block auto-download on first visit
+  ['click', 'touchstart', 'scroll', 'keydown'].forEach(evt => {
+    document.addEventListener(evt, function handler() {
+      saveContact();
+      document.removeEventListener(evt, handler);
+    }, { once: true, passive: true });
   });
 </script>
 </body>
